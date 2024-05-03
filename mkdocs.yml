@@ -1,0 +1,11 @@
+site_name: Tiger Jin
+nav:
+  - Home: index.md
+  - AI: 
+    - 计算机视觉: cv/demo1.md
+theme:
+    name: "material"
+    palette:
+        primary: "black"
+        accent: "white"
+    language: "zh"
