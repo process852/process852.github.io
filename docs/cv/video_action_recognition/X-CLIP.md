@@ -28,6 +28,7 @@
 ![](./images_x_clip/X-CLIP_1.png)
 ![](./images_x_clip/X-CLIP_2.png)
 **Video Encoder**
+
 采样获得的视频片段表示为$V \in R^{T \times H \times W \times 3}$，$T$表示采样的帧数。每一帧图像按照**ViT**的方式进行预处理，第t帧图像划分为不重叠的图像patches $\{x_{t,i}\}_{i = 1}^{N} \in  R ^{P^2 \times 3}$，然后使用线性矩阵$E \in R^{3P^2 \times D}$将patches转换为**patch embedding**。在序列的头部附加一个可学习的embedding，称为Class Token。$z_t^{(0)}$表示跨帧注意力Transformer的原始输入数据，t表示第t帧图像，$e^{spa}$表示空间位置编码。
 $$z_t^{(0)} = [x_{class}, Ex_{t,1}, Ex_{t,2}, \cdots, Ex_{t, N}] + e^{spa}$$
 
@@ -38,6 +39,7 @@ $$h_t = z_{t, 0}^{(L_c)}$$
 $$v = AvgPool(MIT(H + e^{temp}))$$
 其中，AvgPool表示平均池化，$e^{temp}$表示时间位置编码。
 **Cross Frame Attention**
+
 为了在不同帧之间进行**信息**交换，作者提出了两种形式的注意力机制：cross-frame fusion attention (CFA)和intra-frame diffusion attention (IFA)。同时引入**message token**，用于抽象发送接收信息的这一过程，其过程如下图所示。
 ![](./images_x_clip/X-CLIP_3.png)
 CFA表示利用**message token**学习全局的时空依赖关系，其数学表达式如下：
@@ -48,8 +50,10 @@ $$[\hat{z}_t^l, \bar{m}_t^l] = [\hat{z}_t^{l - 1}, \hat{m}_t^l] + IFA(LN([\hat{z
 $$z_t^{l} = \hat{z}_t^{(l)} + FFN(LN(\hat{z}_t^{(l)}))$$
 
 **参数初始化**
+
 IFA模块参数利用预训练权重进行初始化，CFA模块则是随机初始化。
 **Text Encoder**
+
 对于视频描述$C$可以通过文本编码器获得文本表征$c = f_{\theta_c}(C)$，不像以往使用人工设计的提示词来强化文本描述，本文作者提出利用原始的文本描述$C$和**可学习**的文本提示方案。对于视频表征$\bar{z}$和文本表征$c$作为输入，进行自注意力建模提取与文本信息相关的视觉线索。
 $$\bar{c} = c + MSHA(c, \bar{z})$$
 $$\tilde{c} = \bar{c} + FFN(\bar{c})$$
