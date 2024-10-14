@@ -47,3 +47,6 @@ ACK（acknowledgement）。
 * 负责域名解析的 DNS 服务
 
 DNS（Domain Name System）服务是和 HTTP 协议一样位于应用层的协议。它提供域名到 IP 地址之间的解析服务。
+
+
+* 各种协议与 HTTP 协议的关系
