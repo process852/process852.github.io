@@ -1,8 +1,12 @@
 site_name: Tiger Jin
 nav:
   - Home: index.md
+  - 计算机工具:
+    - Bash工具: tools/Bash.md
   - AI: 
     - 计算机视觉: cv/demo1.md
+  - 计算机网络:
+    - 图解HTTP: network/book.md
 theme:
     name: "material"
     palette:
