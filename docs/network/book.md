@@ -50,3 +50,15 @@ DNS（Domain Name System）服务是和 HTTP 协议一样位于应用层的协�
 
 
 * 各种协议与 HTTP 协议的关系
+
+![](./images/Http3.png)
+
+#### URI 和 URL
+
+URI 是 Uniform Resource Identifier 的缩写
+
+## 第二章
+
+#### HTTP 协议用于客户端和服务器端之间的通信
+
+请求访问文本或图像等资源的一端称为**客户端**，而提供资源响应的一端称为**服务器端**。

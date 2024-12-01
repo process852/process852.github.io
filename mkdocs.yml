@@ -7,9 +7,15 @@ nav:
     - 计算机视觉: cv/demo1.md
   - 计算机网络:
     - 图解HTTP: network/book.md
+  - 计算机系统原理: computersArch/README.md
 theme:
     name: "material"
     palette:
         primary: "black"
         accent: "white"
     language: "zh"
+markdown_extensions:
+  - pymdownx.arithmatex
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML
