@@ -157,3 +157,35 @@ int main(int argc, char* argv[]){
     return 0;
 }
 ```
+
+## 浮点数的表示
+
+计算机中浮点数主要是用于**近似**实际中的有理数，它无法精确表示所有数值。1985年IEEE指定了IEEE Standard 754
+标准，统一了以往不同的浮点数表示形式。
+
+#### 分数二进制（Fractional Binary Numbers）
+
+分数二进制主要分为两部分，左边的二进制表示整数部分，右边的二进制表示小数部分，如下图所示。
+
+![](./images/float1.png)
+
+#### IEEE Floating-Point Representation
+
+浮点数的比特位表示被划分为三个字段：
+* 符号位
+* k位的指数字段
+* n位的小数字段
+
+![](./images/float2.png)
+
+浮点数表示存在两种情况：
+
+* Case 1: Normalized Values
+
+
+![](./images/float3.png)
+
+
+* Case 2: Denormalized Values
+
+* Case 3: Special Values
