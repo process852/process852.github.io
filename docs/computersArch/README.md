@@ -2,6 +2,7 @@
 # [机器代码视角](./machineLevel/machine.md)
 # [指针前置知识](./pointers/pointers.md)
 # [GDB调式工具的使用](./gdb/README.md)
+# [汇编语言学习](./assembleLanguage/README.md)
 
 ## 指针的基本概念
 
