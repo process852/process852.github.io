@@ -70,3 +70,103 @@ section .bss
 ## 二进制数、十六进制数以及寄存器
 
 寄存器`rip`存储**下一条要执行的指令(该指令未被执行)**。
+
+# 跳转和循环
+
+## 跳转
+
+```asm
+; jump.asm
+
+section .data
+    number1 dq 42
+    number2 dq 41
+    fmt1 db "NUMBER1 > = NUMBER2", 10, 0
+    fmt2 db "NUMBER1 < NUMBER2", 10, 0
+section .bss
+section .text
+    global main
+    extern printf
+main:
+    push rbp ; 栈帧指针入栈
+    mov rbp, rsp ;
+    mov rax, [number1]
+    mov rbx, [number2]
+    cmp rax, rbx ; 比较rax和rbx寄存器中的数据
+    jge greater ; 若number1 大于等于 number2，则程序跳转至greater处继续执行
+
+    mov rdi, fmt2 ;若number1 小于 number2，则执行此处内容
+    mov rax, 0
+    call printf
+    jmp exit
+greater:
+    mov rdi, fmt1
+    mov rax, 0
+    call printf
+exit:
+    mov rsp, rbp
+    pop rbp
+    ret
+```
+
+## 循环
+
+```asm
+section .data
+    number dq 5
+    fmt db "The sum from 0 to %ld is %ld", 10, 0
+section .bss
+section .text
+    extern printf
+    global main
+main:
+    push rbp 
+    mov rbp, rsp
+    mov rbx, 0 ;计数器
+    mov rax, 0 ; 用于存放累加和
+
+jloop:
+    add rax, rbx
+    inc rbx
+    cmp rbx, [number]
+    jle jloop
+
+    mov rdi, fmt
+    mov rsi, [number]
+    mov rdx, rax
+    mov rax, 0
+    call printf
+    mov rsp, rbp
+    pop rbp
+    ret
+```
+
+* `loop` 指令比常规跳转指令耗时更长
+
+```asm
+section .data
+    number dq 5
+    fmt db "The sum from 0 to %ld is %ld", 10, 0
+section .bss
+section .text
+    extern printf
+    global main
+main:
+    push rbp 
+    mov rbp, rsp
+    mov rcx, [number] ;使用number初始化rcx
+    mov rax, 0 ; 用于存放累加和
+
+bloop:
+    add rax,rcx
+    loop bloop ;loop指令为循环指令，每次循环rcx减1，直到rcx为0停止
+
+    mov rdi, fmt
+    mov rsi, [number]
+    mov rdx, rax
+    mov rax, 0
+    call printf
+    mov rsp, rbp
+    pop rbp
+    ret
+```
