@@ -211,4 +211,96 @@ x86-64结构下函数参数传递大部分通过寄存器实现，寄存器传�
 安全使用，x86-64采用了相同的惯例让所有程序调用都遵循。
 
 
+## 数组
 
+#### 一维数组
+
+数组是内存上连续的字节单元，数组名作为数组首元素的地址。
+
+* example
+
+```C
+#include <stdio.h>
+
+#define ZLEN 5
+typedef int zip_dig[ZLEN];
+
+int get_digit(zip_dig z, int digit){
+    return z[digit];
+}
+
+void zincr(zip_dig z){
+    size_t i;
+    for(i = 0; i < ZLEN; i++){
+        z[i]++;
+    }
+}
+
+int main(){
+    // cmu的值为数组首元素的地址
+    zip_dig cmu = {1, 2, 3, 4, 5};
+    int ret = get_digit(cmu, 1);
+    printf("%d\n", ret);
+    zincr(cmu);
+    return 0;
+}
+```
+
+* 汇编代码
+
+```asm
+; get_digit
+   0x00007ff7a9e21450 <+0>:     movslq %edx,%rdx
+; %rcx存放cmu首地址， %rdx存放索引digit, (%rcx, %rdx, 4) 表示 cmu + digit * 4
+   0x00007ff7a9e21453 <+3>:     mov    (%rcx,%rdx,4),%eax
+   0x00007ff7a9e21456 <+6>:     ret
+
+; zincr
+   0x00007ff69fd51457 <+0>:     mov    $0x0,%eax
+   0x00007ff69fd5145c <+5>:     jmp    0x7ff69fd5146f <zincr+24>
+   0x00007ff69fd5145e <+7>:     lea    (%rcx,%rax,4),%r8        
+   0x00007ff69fd51462 <+11>:    mov    (%r8),%edx
+   0x00007ff69fd51465 <+14>:    add    $0x1,%edx
+   0x00007ff69fd51468 <+17>:    mov    %edx,(%r8)
+   0x00007ff69fd5146b <+20>:    add    $0x1,%rax
+   0x00007ff69fd5146f <+24>:    cmp    $0x4,%rax
+   0x00007ff69fd51473 <+28>:    jbe    0x7ff69fd5145e <zincr+7>
+   0x00007ff69fd51475 <+30>:    ret
+```
+#### 多维数组
+
+
+```C
+#include <stdio.h>
+
+#define ZLEN 5
+typedef int zip_dig[ZLEN];
+
+int main(){
+    zip_dig phg[4] = {
+        {1, 2, 0, 4, 5},
+        {1, 6, 3, 4, 5},
+        {1, 2, 3, 0, 5},
+        {1, 2, 8, 4, 5}
+    };
+
+    printf("%p\n", phg);
+    printf("%p\n", phg[0]);
+    printf("%p\n", &phg[0][0]);
+
+    printf("%p\n", phg + 1); // 等价 第二行数组的首元素地址
+    printf("%p\n", phg[1]);
+    printf("%p\n", &phg[1][0]);
+
+    printf("%d\n", sizeof(phg)); // 80字节，整个二维数组的大小
+    printf("%d\n", sizeof(phg + 1)); // 单个地址大小，8个字节
+    printf("%d\n", sizeof(phg[1])); // 单个一维数组大小，20字节
+    printf("%d\n", sizeof(phg[1][0])); // 单个元素大小，4字节
+
+    printf("%p\n", phg + 1); // 依据元素大小缩放，相当于地址加 20 字节
+    printf("%p\n", phg[0] + 1); // 依据元素大小缩放，相当于地址加 4 字节
+    printf("%p\n", &phg[0][0] + 1);
+
+    return 0;
+}
+```
