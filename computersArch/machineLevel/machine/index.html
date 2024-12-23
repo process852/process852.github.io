@@ -1,0 +1,952 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>机器视角的控制流(Control) - Tiger Jin</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="white">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#control" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Tiger Jin" class="md-header__button md-logo" aria-label="Tiger Jin" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tiger Jin
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              机器视角的控制流(Control)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Tiger Jin" class="md-nav__button md-logo" aria-label="Tiger Jin" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Tiger Jin
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    计算机工具
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            计算机工具
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tools/Bash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bash工具
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cv/demo1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    计算机视觉
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    计算机网络
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            计算机网络
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../network/book/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图解HTTP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    计算机系统原理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dataStructure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数据结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      条件码
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      循环（Loop）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="循环（Loop）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-while" class="md-nav__link">
+    <span class="md-ellipsis">
+      do-while 循环方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#while" class="md-nav__link">
+    <span class="md-ellipsis">
+      while 循环方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for" class="md-nav__link">
+    <span class="md-ellipsis">
+      for 循环方式
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      switch 语句
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="control">机器视角的控制流(Control)</h1>
+<p>我们首先简单查看如下例子：</p>
+<ul>
+<li>C语言源代码</li>
+</ul>
+<pre><code class="language-C">extern void op1(void);
+extern void op2(void);
+
+void decision(int x){
+    if(x){
+        op1();
+    }else{
+        op2();
+    }
+}
+</code></pre>
+<ul>
+<li>上述代码翻译为汇编代码的形式，使用<code>-Og</code>的模式进行编译，生成如下汇编代码</li>
+</ul>
+<pre><code>/*
+说明：
+    %edi 寄存器中存放的数据为 x
+    testl 指令用于测试两个操作数相与的结果，操作大小为l即4个字节
+        %edi &amp; %edi 当寄存器中%edi数为0时，设置条件码ZF为1
+    je 指令表示条件跳转，即当条件码ZF为1时，跳转至.L2标签处继续执行
+    .L2 标签对应于C源码中 else 分支内部的逻辑
+    若 %edi 不为0，则继续执行 call op1@PTL指令即对应于 if(x)分支的内容
+    .L1 标签对应于函数执行完毕，返回的逻辑
+*/
+decision:
+.LFB0:
+    endbr64
+    subq    $8, %rsp
+    testl   %edi, %edi
+    je  .L2
+    call    op1@PLT
+.L1:
+    addq    $8, %rsp
+    ret
+.L2:
+    call    op2@PLT
+    jmp .L1
+</code></pre>
+<h2 id="_1">条件码</h2>
+<p>CPU除了保留整数寄存器，还会存在单比特位的条件码寄存器，用于描述最近的算术或逻辑操作。这些条件码是执行代码分支跳转的关键。</p>
+<ul>
+<li>CF(Carry Flag) 进位标志，针对无符号数溢出产生进位的标志</li>
+<li>ZF(Zero Flag) 零标志，当运算结果为0时，该标志置为1</li>
+<li>SF(Sign Flag) 负数标志，当运算结果为负数时，该标志置为1，<strong>针对有符号数</strong></li>
+<li>OF(Overflow Flag) 溢出标志，当补码运算产生溢出时，设置为1，溢出包括<strong>正数溢出和负数溢出</strong></li>
+</ul>
+<p>改变条件码的相关指令：</p>
+<ul>
+<li>以下表格中的指令除了<code>leaq</code>都会改变条件码</li>
+<li>逻辑操作CF和OF标志位设置为0</li>
+<li>对于移位指令，CF标志位设为最后一位移出的位同时OF标志位设为0</li>
+<li>自增和自减指令会改变OF和ZF条件码，但是CF保持不变</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Effect</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>leaq S, D</td>
+<td>D &lt;- &amp;S</td>
+<td>加载有效地址</td>
+</tr>
+<tr>
+<td>INC D</td>
+<td>D &lt;- D + 1</td>
+<td>寄存器数据原位加1</td>
+</tr>
+<tr>
+<td>DEC D</td>
+<td>D &lt;- D - 1</td>
+<td>寄存器数据原位减1</td>
+</tr>
+<tr>
+<td>NEG D</td>
+<td>D &lt;- -D</td>
+<td>寄存器数据的逆</td>
+</tr>
+<tr>
+<td>NOT D</td>
+<td>D &lt;- ~D</td>
+<td>寄存器数据按位取反</td>
+</tr>
+<tr>
+<td>ADD S, D</td>
+<td>D &lt;- D + S</td>
+<td>执行加法操作</td>
+</tr>
+<tr>
+<td>SUB S, D</td>
+<td>D &lt;- D - S</td>
+<td>执行减法操作</td>
+</tr>
+<tr>
+<td>IMUL S, D</td>
+<td>D&lt;- D * S</td>
+<td>执行乘法操作</td>
+</tr>
+<tr>
+<td>XOR S, D</td>
+<td>D &lt;- D ^ S</td>
+<td>执行按位异或操作</td>
+</tr>
+<tr>
+<td>OR S, D</td>
+<td>D &lt;- D</td>
+<td>S</td>
+</tr>
+<tr>
+<td>AND S, D</td>
+<td>D &lt;- D &amp; S</td>
+<td>执行按位与操作</td>
+</tr>
+<tr>
+<td>SAL k, D</td>
+<td>D &lt;- D &lt;&lt; k</td>
+<td>左移操作</td>
+</tr>
+<tr>
+<td>SHL k, D</td>
+<td>D &lt;- D &lt;&lt; k</td>
+<td>左移操作等价于 SAL</td>
+</tr>
+<tr>
+<td>SAR k, D</td>
+<td>D &lt;- D &gt;&gt; k</td>
+<td>算术右移</td>
+</tr>
+<tr>
+<td>SHR k, D</td>
+<td>D &lt;- D &gt;&gt; k</td>
+<td>逻辑右移</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>CMP</code>指令类和<code>TEST</code>指令类可以不用修改任何寄存器就改变条件码</li>
+<li><code>test</code> 指令多用于比较数是否为0</li>
+<li><code>cmp</code> 指令多用于比较两个数的大小</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Effect</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cmp(b,w,l,q) S1, S2</td>
+<td>S2 - S1</td>
+<td>比较两个数</td>
+</tr>
+<tr>
+<td>test(b,w,l,q) S1, S2</td>
+<td>S1 &amp; S2</td>
+<td>计算两个数相与</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="../images/machine1.png" /></p>
+<ul>
+<li>除了直接读取条件码，还存在三种可以利用条件码的方式<ul>
+<li>依据条件码的结合将一个字节的位设为0或1，下图所示的<code>SET</code>指令类，该指令的目标可以是寄存器也可以是内存地址，<strong>但是仅仅设置低位的一个字节</strong>
+<img alt="" src="../images/machine2.png" /></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../images/machine4.png" />
+    * 条件的跳转至其它程序部分</p>
+<p>跳转指令分为无条件跳转和有条件跳转。</p>
+<p><img alt="" src="../images/machine3.png" /></p>
+<p><img alt="" src="../images/machine5.png" /></p>
+<p>跳转指令编码，汇编代码中跳转目标是使用符号标签表示。当后续的编译器和链接器处理后，会将符号标签转换为实际的二进制地址。如何编码跳转目标，存在两种
+方式。一种是<strong>PC 相关的编码</strong>，即目标指令地址和当前下一条指令地址的差值，这些偏移量可以编码为1，2，4bytes。第二种为<strong>绝对编码</strong>，直接使用4个字节
+编码目标指令地址。</p>
+<pre><code>* 条件的传输数据(Conditional Moves)
+</code></pre>
+<p>充分利用计算能力，分别同时计算不同分支的结果，当判断条件确定时将目标分支的计算结果移动至返回值。
+下图采用<code>O1</code>优化模式。</p>
+<p><img alt="" src="../images/machine6.png" /></p>
+<p>当然条件移动指令也可能存在副作用，如果不同分支存在相互干扰或不安全行为可能会影响计算结果</p>
+<h2 id="loop">循环（Loop）</h2>
+<h4 id="do-while">do-while 循环方式</h4>
+<p><img alt="" src="../images/machine7.png" /></p>
+<h4 id="while">while 循环方式</h4>
+<p>当使用<code>-Og</code>模式时，while循环变为汇编代码时，会首先进行初始化过程，然后跳转至测试代码部分，最后依据测试结果判断是否进入循环体。</p>
+<p><img alt="" src="../images/machine8.png" /></p>
+<p><img alt="" src="../images/machine9.png" /></p>
+<p>当使用<code>-O1</code>优化模式时，会先将while循环转变为do-while循环，再翻译成汇编代码。</p>
+<p><img alt="" src="../images/machine10.png" /></p>
+<p><img alt="" src="../images/machine11.png" /></p>
+<h4 id="for">for 循环方式</h4>
+<p>为什么初始测试可以被优化掉？一个原因是代码编写者应该确保初始条件可以进入循环，否则该代码没有任务意义。其次，如果初始测试条件不满足，可以在编译器阶段进行优化代码。
+<img alt="" src="../images/machine12.png" /></p>
+<p><img alt="" src="../images/machine13.png" /></p>
+<h2 id="switch">switch 语句</h2>
+<h1 id="procedures">机器视角的程序（Procedures）</h1>
+<p>程序是一种软件抽象，用于打包实现特定功能的代码片段。程序调用涉及多个方面的机制：</p>
+<ul>
+<li>传递控制权，程序计数器需要设置为被调用函数的起始位置</li>
+<li>传递数据，调用函数需要将参数数据传递给被调用函数使用</li>
+<li>分配和释放内存空间</li>
+</ul>
+<h2 id="run-time-stack">Run-time Stack</h2>
+<p>栈是一种先进后出的数据结构，十分适合用于函数调用的内存管理。</p>
+<h2 id="_2">控制权转移</h2>
+<p>当函数P内部调用函数Q时，需要将程序计数器设置为函数Q的起始地址，但是为了函数Q执行完毕可以正确返回函数P中指定地址，需要将返回地址进行记录。
+在x86-64机器中，利用指令<code>call Q</code>完成上述功能。</p>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>call Label</td>
+<td>将当前指令的下一条指令地址推入栈中，并将PC设为Label地址</td>
+</tr>
+<tr>
+<td>call *Operand</td>
+<td>将当前指令的下一条指令地址推入栈中，并将PC设为操作数所指定的地址</td>
+</tr>
+<tr>
+<td>ret</td>
+<td>将栈上的地址弹出记为A，并将PC设为地址A</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-bash">call 指令的动作：
+1. 寄存器%rsp减去8个字节（这8个字节用于存储函数执行完毕返回的地址）
+2. 寄存器%rip设置为被调用函数的起始地址
+
+ret 指令的动作：
+1. 弹出寄存器%rsp所指向内存地址的8个字节(地址A)
+2. 将寄存器%rsp = %rsp + 0x8
+3. 将寄存器%rip设为地址A
+</code></pre>
+<h2 id="_3">数据转移</h2>
+<p>x86-64结构下函数参数传递大部分通过寄存器实现，寄存器传递参数存在约定俗成的做法：</p>
+<ul>
+<li>x86-64下至多可以通过寄存器传递6个整数参数(包括指针)，使用顺序（<strong>从左往右</strong>）如下图所示：</li>
+</ul>
+<p><img alt="" src="../images/machine14.png" /></p>
+<ul>
+<li>当函数参数超过6个，剩余参数通过栈进行传递，入栈的顺序为<strong>从右往左</strong></li>
+</ul>
+<p><img alt="" src="../images/machine15.png" /></p>
+<h2 id="_4">栈上数据的局部存储</h2>
+<ul>
+<li>没有足够的寄存器保存所有局部数据</li>
+<li>取地址运算符用于某个局部变量</li>
+<li>一些局部变量是数组或结构体</li>
+</ul>
+<p>函数的局部变量以相反的顺序存储在栈上？</p>
+<h2 id="_5">寄存器上的局部变量</h2>
+<p>所有程序都共享相同的寄存器，当函数不断调用，被调用函数可能覆盖寄存器的值，这导致之前的函数在之后无法访问原始的数据。为了保证局部变量在寄存器上的
+安全使用，x86-64采用了相同的惯例让所有程序调用都遵循。</p>
+<h2 id="_6">数组</h2>
+<h4 id="_7">一维数组</h4>
+<p>数组是内存上连续的字节单元，数组名作为数组首元素的地址。</p>
+<ul>
+<li>example</li>
+</ul>
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+#define ZLEN 5
+typedef int zip_dig[ZLEN];
+
+int get_digit(zip_dig z, int digit){
+    return z[digit];
+}
+
+void zincr(zip_dig z){
+    size_t i;
+    for(i = 0; i &lt; ZLEN; i++){
+        z[i]++;
+    }
+}
+
+int main(){
+    // cmu的值为数组首元素的地址
+    zip_dig cmu = {1, 2, 3, 4, 5};
+    int ret = get_digit(cmu, 1);
+    printf(&quot;%d\n&quot;, ret);
+    zincr(cmu);
+    return 0;
+}
+</code></pre>
+<ul>
+<li>汇编代码</li>
+</ul>
+<pre><code class="language-asm">; get_digit
+   0x00007ff7a9e21450 &lt;+0&gt;:     movslq %edx,%rdx
+; %rcx存放cmu首地址， %rdx存放索引digit, (%rcx, %rdx, 4) 表示 cmu + digit * 4
+   0x00007ff7a9e21453 &lt;+3&gt;:     mov    (%rcx,%rdx,4),%eax
+   0x00007ff7a9e21456 &lt;+6&gt;:     ret
+
+; zincr
+   0x00007ff69fd51457 &lt;+0&gt;:     mov    $0x0,%eax
+   0x00007ff69fd5145c &lt;+5&gt;:     jmp    0x7ff69fd5146f &lt;zincr+24&gt;
+   0x00007ff69fd5145e &lt;+7&gt;:     lea    (%rcx,%rax,4),%r8        
+   0x00007ff69fd51462 &lt;+11&gt;:    mov    (%r8),%edx
+   0x00007ff69fd51465 &lt;+14&gt;:    add    $0x1,%edx
+   0x00007ff69fd51468 &lt;+17&gt;:    mov    %edx,(%r8)
+   0x00007ff69fd5146b &lt;+20&gt;:    add    $0x1,%rax
+   0x00007ff69fd5146f &lt;+24&gt;:    cmp    $0x4,%rax
+   0x00007ff69fd51473 &lt;+28&gt;:    jbe    0x7ff69fd5145e &lt;zincr+7&gt;
+   0x00007ff69fd51475 &lt;+30&gt;:    ret
+</code></pre>
+<h4 id="_8">多维数组</h4>
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+
+#define ZLEN 5
+typedef int zip_dig[ZLEN];
+
+int main(){
+    zip_dig phg[4] = {
+        {1, 2, 0, 4, 5},
+        {1, 6, 3, 4, 5},
+        {1, 2, 3, 0, 5},
+        {1, 2, 8, 4, 5}
+    };
+
+    printf(&quot;%p\n&quot;, phg);
+    printf(&quot;%p\n&quot;, phg[0]);
+    printf(&quot;%p\n&quot;, &amp;phg[0][0]);
+
+    printf(&quot;%p\n&quot;, phg + 1); // 等价 第二行数组的首元素地址
+    printf(&quot;%p\n&quot;, phg[1]);
+    printf(&quot;%p\n&quot;, &amp;phg[1][0]);
+
+    printf(&quot;%d\n&quot;, sizeof(phg)); // 80字节，整个二维数组的大小
+    printf(&quot;%d\n&quot;, sizeof(phg + 1)); // 单个地址大小，8个字节
+    printf(&quot;%d\n&quot;, sizeof(phg[1])); // 单个一维数组大小，20字节
+    printf(&quot;%d\n&quot;, sizeof(phg[1][0])); // 单个元素大小，4字节
+
+    printf(&quot;%p\n&quot;, phg + 1); // 依据元素大小缩放，相当于地址加 20 字节
+    printf(&quot;%p\n&quot;, phg[0] + 1); // 依据元素大小缩放，相当于地址加 4 字节
+    printf(&quot;%p\n&quot;, &amp;phg[0][0] + 1);
+
+    return 0;
+}
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
