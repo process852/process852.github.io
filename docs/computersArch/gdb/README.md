@@ -18,3 +18,13 @@
   * `x/13d addr`表示显示地址addr处开始的13个字节，以十进制显示
 * `p $eflags`可以查看条件标志位，`eflags`寄存器不同的位标识不同的标志位的状态
 * `layout asm`调出两个窗口，一个显示汇编代码，一个显示gdb命令输入窗口
+  * `layout src`显示源代码窗口
+  * `layout regs`显示寄存器窗口
+  * `layout split`同时显示源代码和汇编代码
+
+* `readelf` 命令行工具
+
+ELF(Executable and Linkable Format)是linux下一种通用的目标文件格式。
+
+`readelf --file-header ./memory`读取可执行文件的头文件信息。
+

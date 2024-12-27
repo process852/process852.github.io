@@ -170,3 +170,55 @@ bloop:
     pop rbp
     ret
 ```
+
+# 内存
+
+内存被处理器用作数据和指令的存储空间。
+
+```asm
+;memory.asm
+
+section .data
+    bNum db 123
+    wNum dw 12345
+    warray times 5 dw 0
+
+    dNum dd 12345
+    qNum1 dq 12345
+    text1 db "abc", 0
+    qNum2 dq 3.141592654
+    text2 db "cde",0
+
+section .bss
+    bvar resb 1
+    dvar resd 1
+    wvar resw 10
+    qvar resq 3
+
+section .text
+    global main
+
+main:
+    push rbp
+    mov rbp, rsp
+    lea rax, [bNum] ;将bNum地址加载到寄存器rax中
+    mov rax, bNum ;将bNum地址拷贝至寄存器rax中
+    mov rax, [bNum] ;将bNum地址的内容拷贝至rax寄存器中
+                    ;注意这里不仅加载了数据123，rax寄存器是64位
+                    ;所以这里是将地址bNum开始的8个字节拷贝至寄存器rax中
+    mov [bvar], rax ; 将寄存器的数据拷贝至内存bvar开始的8个字节
+                    ; 寄存器的地位放置在 bvar 开始的地址
+    lea rax, [bvar]
+    lea rax, [wNum]
+    mov rax, [wNum]
+    lea rax, [text1] ;加载text1的地址
+    mov rax, text1 ;加载text1的地址
+    mov rax, text1 + 1
+    lea rax, [text1 + 1] ; 加载第二字符的地址
+    mov rax, [text1] ; 从text1地址开始拷贝8个字节
+    mov rax, [text1+1] ; 从 text1 + 1地址拷贝8个字节
+    mov rsp, rbp
+    pop rbp
+    ret
+
+```
