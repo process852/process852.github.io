@@ -304,3 +304,63 @@ int main(){
     return 0;
 }
 ```
+
+# 优化程序性能
+
+## 逻辑相同的代码却出现不同的效果
+
+```C
+void add1(long* xp, long *yp){
+    *xp += *yp;
+    *xp += *yp;
+}
+
+void add2(long* xp, long* yp){
+    *xp += 2 * *yp;
+}
+// 在gcc -S -Og 模式下产生如下汇编代码
+// add1 函数涉及更多的内存引用，相对低效
+// 内存访问的速度远远慢于寄存器速度
+add1:
+.LFB0:
+	endbr64
+	movq	(%rdi), %rax
+	addq	(%rsi), %rax
+	movq	%rax, (%rdi)
+	addq	(%rsi), %rax
+	movq	%rax, (%rdi)
+	ret
+add2:
+.LFB1:
+	endbr64
+	movq	(%rsi), %rax
+	addq	%rax, %rax
+	addq	%rax, (%rdi)
+	ret
+```
+
+## 函数优化中的副作用
+
+```C
+
+long counter = 0;
+
+long f();
+
+// 由于函数f()中修改了全局变量counter，func1不能简单优化为func2
+long func1(){
+    return f() + f() + f() + f();
+}
+
+long func2(){
+    return 4*f();
+}
+
+long f(){
+    counter++;
+}
+```
+
+## 程序性能的衡量
+
+**CPE(Cycles Per Element)**指标用于衡量重复计算程序的性能。
